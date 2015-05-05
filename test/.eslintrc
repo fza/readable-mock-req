@@ -1,0 +1,15 @@
+// @formatter:off
+{
+  "globals": {
+    "describe": false,
+    "it": false,
+    "before": false,
+    "beforeEach": false,
+    "after": false,
+    "afterEach": false
+  },
+
+  "rules": {
+    "no-unused-expressions": 0
+  }
+}

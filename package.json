@@ -1,0 +1,42 @@
+{
+  "name": "readable-mock-req",
+  "version": "0.1.0",
+  "description": "Node.js http.IncomingMessage mock (readable stream only)",
+  "author": "Felix Zandanel <felix@zandanel.me>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fza/readable-mock-req.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fza/readable-mock-req/issues"
+  },
+  "keywords": [
+    "mock",
+    "IncomingMessage",
+    "req",
+    "request",
+    "test",
+    "stub",
+    "readable",
+    "stream"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "chai": "~2.2.0",
+    "format": "~0.2.1",
+    "grunt": "~0.4.5",
+    "grunt-cafe-mocha": "~0.1.13",
+    "grunt-eslint": "~11.0.0",
+    "grunt-mocha-istanbul": "^2.4.0",
+    "istanbul": "^0.3.13",
+    "load-grunt-tasks": "~3.1.0",
+    "mocha": "^2.2.4"
+  },
+  "dependencies": {
+    "methods": "~1.1.1"
+  }
+}
