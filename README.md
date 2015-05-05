@@ -1,6 +1,8 @@
-# http.IncomingMessage() mock
+# http.IncomingMessage mock
 
-[![Build Status](https://travis-ci.org/fza/readable-mock-req.png)](https://travis-ci.org/fza/readable-mock-req) [![Coverage Status](https://coveralls.io/repos/fza/readable-mock-req/badge.png?branch=master)](https://coveralls.io/r/fza/readable-mock-req?branch=master) [![Dependency status](https://david-dm.org/fza/readable-mock-req/status.png)](https://david-dm.org/fza/readable-mock-req#info=dependencies&view=table) [![Dev Dependency Status](https://david-dm.org/fza/readable-mock-req/dev-status.png)](https://david-dm.org/fza/readable-mock-req#info=devDependencies&view=table)
+[![Build Status](https://travis-ci.org/fza/readable-mock-req.svg)](https://travis-ci.org/fza/readable-mock-req) [![Coverage Status](https://coveralls.io/repos/fza/readable-mock-req/badge.svg?branch=master)](https://coveralls.io/r/fza/readable-mock-req?branch=master) [![Dependency Status](https://david-dm.org/fza/readable-mock-req.svg)](https://david-dm.org/fza/readable-mock-req) [![devDependency Status](https://david-dm.org/fza/readable-mock-req/dev-status.svg)](https://david-dm.org/fza/readable-mock-req#info=devDependencies)
+
+[![NPM](https://nodei.co/npm/readable-mock-req.png)](https://npmjs.org/package/readable-mock-req)
 
 Yet another [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_http_incomingmessage) mock that inherits `stream.Readable` and is not a writable stream. It tries to simulate IncomingMessage as close as possible:
 
@@ -10,6 +12,12 @@ Yet another [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_http_
 * populating `trailers` and `rawTrailers` after the `end` event.
 
 To pipe data into the mock object, either override `mock._read()` or use `mock._setSource(readableStream)`. Data will be piped and events (`end`, `close`, `error`) will be proxied from the source stream.
+
+## Installation
+
+```shell
+npm install --save-dev readable-mock-req
+```
 
 ## API
 
