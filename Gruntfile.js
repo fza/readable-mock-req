@@ -20,7 +20,6 @@ module.exports = function (grunt) {
     mocha_istanbul: {
       all: {
         options: {
-          coverage: true,
           check: {
             lines: 100,
             statements: 100,
@@ -36,12 +35,17 @@ module.exports = function (grunt) {
           'test/**/*.spec.js'
         ]
       }
+    },
+
+    coveralls: {
+      options: {
+        force: false
+      },
+      coverage: {
+        src: 'coverage/lcov.info'
+      }
     }
 
-  });
-
-  grunt.event.on('coverage', function (lcovData, done) {
-    done();
   });
 
   grunt.registerTask('test', [
