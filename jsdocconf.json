@@ -1,0 +1,18 @@
+{
+  "tags": {
+    "allowUnknownTags": false,
+    "dictionaries": [
+      "jsdoc"
+    ]
+  },
+  "source": {
+    "includePattern": "lib\\/.+\\.js$"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true
+  }
+}
