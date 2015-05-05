@@ -114,7 +114,7 @@ describe('new MockRequest()', function () {
 
 describe('A MockRequest instance', function () {
   it('should throw when trying to read when a source stream was not set', function () {
-    var req = new MockRequest();
+    var req = new MockRequest('post');
 
     expect(function () {
       req.read();
@@ -130,7 +130,7 @@ describe('A MockRequest instance', function () {
 
     expect(req.trailers['foo']).to.be.an('undefined');
 
-    req.on('end', function () {
+    req.once('end', function () {
       expect(req.trailers['foo']).to.equal('bar');
       expect(req.rawTrailers[0]).to.equal('Foo');
       expect(req.rawTrailers[1]).to.equal('bar');
@@ -150,6 +150,14 @@ describe('A MockRequest instance', function () {
       done();
     });
   });
+
+  ['GET', 'HEAD', 'DELETE'].forEach(function (method) {
+    it(format('should end automatically when the method is %s', method), function (done) {
+      var req = new MockRequest(method);
+      req.on('end', done);
+      req.resume();
+    });
+  });
 });
 
 describe('MockRequest#_setSource', function () {
@@ -157,8 +165,18 @@ describe('MockRequest#_setSource', function () {
   var sourceStream;
 
   beforeEach(function () {
-    req = new MockRequest();
+    req = new MockRequest('post');
     sourceStream = new ReadableStream();
+  });
+
+  ['GET', 'HEAD', 'DELETE'].forEach(function (method) {
+    it(format('should throw when the request method is %s', method), function () {
+      req = new MockRequest(method);
+
+      expect(function () {
+        req._setSource(Object());
+      }).to.throw();
+    });
   });
 
   it('should throw when not given a readable stream instance', function () {
