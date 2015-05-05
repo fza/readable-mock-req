@@ -101,6 +101,7 @@ describe('new MockRequest()', function () {
     });
 
     expect(Object.keys(req.headers).length).to.equal(0);
+    expect(req.rawHeaders.length).to.equal(0);
   });
 
   it('should set arbitrary, unreserved properties on the mock object', function () {
