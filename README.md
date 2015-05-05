@@ -62,7 +62,7 @@ GET
 <tr>
 <td class="name"><code>url</code></td>
 <td class="type">
-<span class="param-type">url</span>
+<span class="param-type">string</span>
 </td>
 <td class="attributes">
 &lt;optional><br>
