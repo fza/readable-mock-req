@@ -137,8 +137,9 @@ describe('A MockRequest instance', function () {
     });
 
     var sourceStream = new ReadableStream();
-    req._setSource(sourceStream);
+    sourceStream._read = function () {};
     sourceStream.push(null);
+    req._setSource(sourceStream);
     req.resume();
   });
 
@@ -166,17 +167,17 @@ describe('MockRequest#_setSource', function () {
   });
 
   it('should cause the instance to pipe data from the source stream', function (done) {
-    req.once('data', function (chunk) {
-      expect(chunk.toString()).to.equal('foo');
-      done();
-    });
-
     sourceStream._read = function () {
       sourceStream.push('foo');
       sourceStream.push(null);
     };
 
     req._setSource(sourceStream);
+
+    req.once('data', function (chunk) {
+      expect(chunk.toString()).to.equal('foo');
+      done();
+    });
   });
 
   it('should cause the instance to proxy error events from the source stream', function (done) {
