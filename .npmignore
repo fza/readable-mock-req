@@ -19,3 +19,8 @@ build/Release
 node_modules/
 npm-debug.log
 test/
+
+# Other
+Gruntfile.js
+jsdocconf.json
+.travis.yml
