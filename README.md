@@ -4,7 +4,7 @@
 
 [![NPM](https://nodei.co/npm/readable-mock-req.png)](https://npmjs.org/package/readable-mock-req)
 
-Yet another [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_http_incomingmessage) mock that inherits `stream.Readable` and is not a writable stream. It tries to simulate IncomingMessage as close as possible by:
+Yet another [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_http_incomingmessage) mock that inherits only a readable stream, not a writable stream. It tries to simulate IncomingMessage as close as possible by:
 
 * validating and setting uppercased `method` (defaults to GET),
 * ensuring there is a `url` (defaults to `/`),
@@ -12,7 +12,7 @@ Yet another [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_http_
 * populating `trailers` and `rawTrailers` after the `end` event
 * ending the readable stream automatically when the method is GET/HEAD/DELETE.
 
-To pipe data into the mock object, either override `mock._read()` (and use `mock.push()` etc.) or use `mock._setSource(readableStream)`. Data will then be piped and events (`end`, `close`, `error`) will be proxied from the source stream.
+To pipe data into the request mock, either override `mock._read()` (and use `mock.push()` etc.) or use `mock._setSource(readableStream)`. Data and stream-events (`end`, `close`, `error`) will then be passed through.
 
 ## Installation
 
@@ -62,7 +62,7 @@ GET
 <tr>
 <td class="name"><code>url</code></td>
 <td class="type">
-<span class="param-type">string</span>
+<span class="param-type">url</span>
 </td>
 <td class="attributes">
 &lt;optional><br>
@@ -105,7 +105,7 @@ GET
 </dt>
 <dd>
 <div class="description">
-<p><a href="https://nodejs.org/api/stream.html#stream_readable_read_size_1">stream.Readable#_read</a></p>
+<p>See <a href="https://nodejs.org/api/stream.html#stream_readable_read_size_1">stream.Readable#_read</a></p>
 </div>
 <dl class="details">
 <dt class="tag-source">Source:</dt>
@@ -113,17 +113,17 @@ GET
 <li>
 <a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L99">lineno 99</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L101">lineno 101</a>
 </li>
 </ul></dd>
 </dl>
 </dd>
 <dt>
-<h4 class="name" id="_setSource"><span class="type-signature"></span>_setSource<span class="signature">(source)</span><span class="type-signature"></span></h4>
+<h4 class="name" id="_setSource"><span class="type-signature"></span>_setSource<span class="signature">(src)</span><span class="type-signature"></span></h4>
 </dt>
 <dd>
 <div class="description">
-<p>Set a source readable stream, data and events will be proxied</p>
+<p>Set the source stream, the mock will pass through all data and events</p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -136,7 +136,7 @@ GET
 </thead>
 <tbody>
 <tr>
-<td class="name"><code>source</code></td>
+<td class="name"><code>src</code></td>
 <td class="type">
 <span class="param-type">object</span>
 </td>
@@ -150,7 +150,7 @@ GET
 <li>
 <a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L108">lineno 108</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L110">lineno 110</a>
 </li>
 </ul></dd>
 </dl>
@@ -160,7 +160,7 @@ GET
 </dt>
 <dd>
 <div class="description">
-<p><a href="https://nodejs.org/api/http.html#http_message_settimeout_msecs_callback">http.IncomingMessage#setTimeout</a></p>
+<p>See <a href="https://nodejs.org/api/http.html#http_message_settimeout_msecs_callback">http.IncomingMessage#setTimeout</a></p>
 </div>
 <dl class="details">
 <dt class="tag-source">Source:</dt>
@@ -168,7 +168,7 @@ GET
 <li>
 <a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L92">lineno 92</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L94">lineno 94</a>
 </li>
 </ul></dd>
 </dl>
