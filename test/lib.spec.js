@@ -2,8 +2,8 @@
 
 var expect = require('chai').expect;
 var format = require('format');
-var ReadableStream = require('stream').Readable;
-var WritableStream = require('stream').Writable;
+var Readable = require('readable-stream/readable');
+var isReadable = require('is-readable-stream');
 var MockRequest = require('..');
 
 describe('new MockRequest()', function () {
@@ -17,16 +17,16 @@ describe('new MockRequest()', function () {
     expect(req).to.be.an.instanceOf(MockRequest);
   });
 
-  it('should return a stream.Readable instance', function () {
-    expect(req).to.be.an.instanceOf(ReadableStream);
-  });
-
   it('should return a MockRequest instance when not called with "new"', function () {
     expect(MockRequest()).to.be.an.instanceOf(MockRequest); // eslint-disable-line new-cap
   });
 
-  it('should not return a stream.Writable instance', function () {
-    expect(req).to.not.be.an.instanceOf(WritableStream);
+  it('should return a readable stream', function () {
+    expect(isReadable(req)).to.be.true;
+  });
+
+  it('should not return a writable stream', function () {
+    expect(req.write).to.be.undefined;
   });
 
   it('should use GET as default method', function () {
@@ -45,7 +45,7 @@ describe('new MockRequest()', function () {
 
   ['connection', 'socket', 'client', 'statusCode', 'statusMessage'].forEach(function (key) {
     it(format('should use null for req.%s by default', key), function () {
-      expect(req[key]).to.equal(null);
+      expect(req[key]).to.be.null;
     });
   });
 
@@ -137,10 +137,10 @@ describe('A MockRequest instance', function () {
       done();
     });
 
-    var sourceStream = new ReadableStream();
-    sourceStream._read = function () {};
-    sourceStream.push(null);
-    req._setSource(sourceStream);
+    var src = new Readable();
+    src._read = function () {};
+    src.push(null);
+    req._setSource(src);
     req.resume();
   });
 
@@ -162,11 +162,11 @@ describe('A MockRequest instance', function () {
 
 describe('MockRequest#_setSource', function () {
   var req;
-  var sourceStream;
+  var src;
 
   beforeEach(function () {
     req = new MockRequest('post');
-    sourceStream = new ReadableStream();
+    src = new Readable();
   });
 
   ['GET', 'HEAD', 'DELETE'].forEach(function (method) {
@@ -186,12 +186,12 @@ describe('MockRequest#_setSource', function () {
   });
 
   it('should cause the instance to pipe data from the source stream', function (done) {
-    sourceStream._read = function () {
-      sourceStream.push('foo');
-      sourceStream.push(null);
+    src._read = function () {
+      src.push('foo');
+      src.push(null);
     };
 
-    req._setSource(sourceStream);
+    req._setSource(src);
 
     req.once('data', function (chunk) {
       expect(chunk.toString()).to.equal('foo');
@@ -207,12 +207,12 @@ describe('MockRequest#_setSource', function () {
       done();
     });
 
-    sourceStream._read = function () {
-      sourceStream.push('foo');
-      sourceStream.push(null);
+    src._read = function () {
+      src.push('foo');
+      src.push(null);
     };
-    req._setSource(sourceStream);
-    sourceStream.emit('error', testError);
+    req._setSource(src);
+    src.emit('error', testError);
   });
 
   it('should cause the instance to emit "end" when the source stream ends', function (done) {
@@ -220,9 +220,9 @@ describe('MockRequest#_setSource', function () {
       done();
     });
 
-    sourceStream._read = function () {};
-    req._setSource(sourceStream);
-    sourceStream.push(null);
+    src._read = function () {};
+    req._setSource(src);
+    src.push(null);
     req.resume();
   });
 
@@ -231,8 +231,8 @@ describe('MockRequest#_setSource', function () {
       done();
     });
 
-    sourceStream._read = function () {};
-    req._setSource(sourceStream);
-    sourceStream.emit('close');
+    src._read = function () {};
+    req._setSource(src);
+    src.emit('close');
   });
 });
