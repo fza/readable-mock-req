@@ -101,24 +101,6 @@ GET
 </div>
 <dl>
 <dt>
-<h4 class="name" id="_read"><span class="type-signature"></span>_read<span class="signature">()</span><span class="type-signature"></span></h4>
-</dt>
-<dd>
-<div class="description">
-<p>See <a href="https://nodejs.org/api/stream.html#stream_readable_read_size_1">stream.Readable#_read</a></p>
-</div>
-<dl class="details">
-<dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
-<span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L101">lineno 101</a>
-</li>
-</ul></dd>
-</dl>
-</dd>
-<dt>
 <h4 class="name" id="_setSource"><span class="type-signature"></span>_setSource<span class="signature">(src)</span><span class="type-signature"></span></h4>
 </dt>
 <dd>
@@ -150,7 +132,7 @@ GET
 <li>
 <a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L110">lineno 110</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L103">lineno 103</a>
 </li>
 </ul></dd>
 </dl>
