@@ -221,6 +221,15 @@ describe('MockRequest#_setSource (data stream)', function () {
     });
   });
 
+  it('should throw when trying to set another source stream', function () {
+    mock._setSource(src);
+
+    var src2 = new Readable();
+    expect(function () {
+      mock._setSource(src2);
+    }).to.throw();
+  });
+
   it('should throw when not given a readable stream object, string or Buffer', function () {
     expect(function () {
       mock._setSource(Object());
