@@ -4,7 +4,7 @@
 
 [![NPM](https://nodei.co/npm/readable-mock-req.png)](https://npmjs.org/package/readable-mock-req)
 
-Yet another [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_http_incomingmessage) mock that inherits only a readable stream, not a writable stream. It tries to simulate IncomingMessage as close as possible by:
+Yet another [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_http_incomingmessage) mock that is only a readable stream, not a writable stream. It tries to simulate IncomingMessage as close as possible by:
 
 * validating and setting uppercased `method` (defaults to GET),
 * ensuring there is a `url` (defaults to `/`),
@@ -12,7 +12,11 @@ Yet another [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_http_
 * populating `trailers` and `rawTrailers` after the `end` event
 * ending the readable stream automatically when the method is GET/HEAD/DELETE.
 
-To pipe data into the request mock, either override `mock._read()` (and use `mock.push()` etc.) or use `mock._setSource(readableStream)`. Data and stream-events (`end`, `close`, `error`) will then be passed through.
+Data can be piped into the request mock by either providing `props.source` (String, Buffer, Readable Stream), calling `_setSource()` with any of the aforementioned data types, or by using the usual suspects (`_read()`, `read()`, `push()`, `unshift()`).
+
+Before passing through data from a source stream, the mock awaits the first read attempt, then periodically pulls as much as it can and as much the mock's buffer can handle, never more. Creating a mock and passing a source stream, then destroying the mock, creating another and setting the same source there without any actual read attempts will not cause any data to be pulled from the source.
+
+readable-mock-req supports Streams3 API via [readable-stream ~v1.1.0](https://github.com/iojs/readable-stream).
 
 ## Installation
 
@@ -91,9 +95,9 @@ GET
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
+<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L32">lineno 32</a>
+<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js#L32">lineno 32</a>
 </li>
 </ul></dd>
 </dl>
@@ -105,7 +109,8 @@ GET
 </dt>
 <dd>
 <div class="description">
-<p>Set the source, the mock will pass through all data and events</p>
+<p>Set the source, the mock will pass through all data and events. When using a source stream, do
+not override <code>_read()</code>!</p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -134,9 +139,9 @@ GET
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
+<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L109">lineno 109</a>
+<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js#L110">lineno 110</a>
 </li>
 </ul></dd>
 </dl>
@@ -153,9 +158,9 @@ GET
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
+<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L100">lineno 100</a>
+<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js#L100">lineno 100</a>
 </li>
 </ul></dd>
 </dl>
