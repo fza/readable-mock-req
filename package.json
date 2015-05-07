@@ -1,6 +1,6 @@
 {
   "name": "readable-mock-req",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Yet another http.IncomingMessage mock (readable stream only)",
   "author": "Felix Zandanel <felix@zandanel.me>",
   "license": "MIT",
