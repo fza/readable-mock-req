@@ -93,7 +93,7 @@ GET
 <li>
 <a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L31">lineno 31</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L32">lineno 32</a>
 </li>
 </ul></dd>
 </dl>
@@ -105,7 +105,7 @@ GET
 </dt>
 <dd>
 <div class="description">
-<p>Set the source stream, the mock will pass through all data and events</p>
+<p>Set the source, the mock will pass through all data and events</p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -121,8 +121,12 @@ GET
 <td class="name"><code>src</code></td>
 <td class="type">
 <span class="param-type">object</span>
+|
+<span class="param-type">string</span>
+|
+<span class="param-type">Buffer</span>
 </td>
-<td class="description last"><p>Readable stream</p></td>
+<td class="description last"><p>Readable stream, string or Buffer</p></td>
 </tr>
 </tbody>
 </table>
@@ -132,7 +136,7 @@ GET
 <li>
 <a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L103">lineno 103</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L109">lineno 109</a>
 </li>
 </ul></dd>
 </dl>
@@ -142,7 +146,8 @@ GET
 </dt>
 <dd>
 <div class="description">
-<p>See <a href="https://nodejs.org/api/http.html#http_message_settimeout_msecs_callback">http.IncomingMessage#setTimeout</a></p>
+<p>See
+<a href="https://nodejs.org/api/http.html#http_message_settimeout_msecs_callback">http.IncomingMessage#setTimeout</a></p>
 </div>
 <dl class="details">
 <dt class="tag-source">Source:</dt>
@@ -150,7 +155,7 @@ GET
 <li>
 <a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L94">lineno 94</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L100">lineno 100</a>
 </li>
 </ul></dd>
 </dl>

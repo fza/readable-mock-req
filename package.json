@@ -38,7 +38,8 @@
     "is-readable-stream": "~1.0.0",
     "istanbul": "~0.3.13",
     "load-grunt-tasks": "~3.1.0",
-    "mocha": "~2.2.4"
+    "mocha": "~2.2.4",
+    "sinon": "~1.14.1"
   },
   "dependencies": {
     "methods": "~1.1.1",
