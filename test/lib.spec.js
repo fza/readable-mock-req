@@ -59,14 +59,14 @@ describe('new MockRequest()', function () {
   ['headers', 'trailers'].forEach(function (key) {
     it(format('should use an empty object for mock.%s by default', key), function () {
       expect(mock[key]).to.be.an('object');
-      expect(Object.keys(mock[key]).length).to.equal(0);
+      expect(Object.keys(mock[key])).to.have.length(0);
     });
   });
 
   ['rawHeaders', 'rawTrailers'].forEach(function (key) {
     it(format('should use an empty array for mock.%s by default', key), function () {
       expect(mock[key]).to.be.an('array');
-      expect(mock[key].length).to.equal(0);
+      expect(mock[key]).to.have.length(0);
     });
   });
 
@@ -109,12 +109,12 @@ describe('new MockRequest()', function () {
       }
     });
 
-    expect(Object.keys(mock.headers).length).to.equal(0);
-    expect(mock.rawHeaders.length).to.equal(0);
+    expect(Object.keys(mock.headers)).to.have.length(0);
+    expect(mock.rawHeaders).to.have.length(0);
   });
 
   it('should set arbitrary, unreserved properties on the mock object', function () {
-    mock = new MockRequest('post', '/foo', {
+    mock = new MockRequest('post', '/', {
       foo: 'bar'
     });
 
@@ -123,24 +123,44 @@ describe('new MockRequest()', function () {
 
   [['string', 'foo'], ['Buffer', new Buffer('foo')], ['null', null]].forEach(function (testData) {
     if (testData[1] !== null) {
-      it(format('should treat a %s value for props.source as source data', testData[0]), function () {
-        mock = new MockRequest('post', '/foo', {
+      it(format(
+        'should treat a %s value for props.source as static source data',
+        testData[0]
+      ), function (done) {
+        mock = new MockRequest('post', '/', {
           source: testData[1]
         });
 
-        expect(mock.read(3).toString()).to.equal('foo');
+        setImmediate(function () {
+          expect(mock.read(3).toString()).to.equal('foo');
+          done();
+        });
       });
     }
 
-    it(format(
-      'should end the stream automatically when ' +
-      'given a %s value as source data', testData[0]
-    ), function (done) {
-      mock = new MockRequest('post', '/foo', {
+    it(format('should end the stream when given a %s value as source data', testData[0]), function (done) {
+      mock = new MockRequest('post', '/', {
         source: testData[1]
       });
 
       mock.on('end', done);
+      mock.resume();
+    });
+
+    it(format(
+      'should set the Content-Length header when given a %s value as source data',
+      testData[0]
+    ), function (done) {
+      mock = new MockRequest('post', '/', {
+        source: testData[1]
+      });
+
+      var expectedLength = '' + (testData[1] === null ? 0 : testData[1].length);
+
+      mock.on('end', function () {
+        expect(mock.headers['content-length']).to.equal(expectedLength);
+        done();
+      });
       mock.resume();
     });
   });
@@ -152,7 +172,7 @@ describe('new MockRequest()', function () {
       src.push(null);
     };
 
-    mock = new MockRequest('post', '/foo', {
+    mock = new MockRequest('post', '/', {
       source: src
     });
 
@@ -170,7 +190,7 @@ describe('A MockRequest instance', function () {
   });
 
   it('should populate trailers and rawTrailers only after the stream ended', function (done) {
-    mock = new MockRequest('post', '/foo', {
+    mock = new MockRequest('post', '/', {
       trailers: {
         'Foo': 'bar'
       }
@@ -206,7 +226,7 @@ describe('A MockRequest instance', function () {
   });
 });
 
-describe('MockRequest#_setSource (data stream)', function () {
+describe('MockRequest#_setSource', function () {
   beforeEach(function () {
     mock = new MockRequest('post');
     src = new Readable();
@@ -290,9 +310,65 @@ describe('MockRequest#_setSource (data stream)', function () {
       done();
     }, 5);
   });
+
+  it(
+    'should consume all data from the source upfront and set the Content-Length header ' +
+    'when given true as second argument',
+    function (done) {
+      var readStub = sinon.stub(src, '_read', function () {
+        src.push('foo');
+        src.push(null);
+      });
+      mock._setSource(src, true);
+
+      // Should start reading immediately
+      expect(readStub.callCount).to.be.at.least(1);
+
+      mock.once('end', function () {
+        expect(mock.headers['content-length']).to.equal('3');
+        done();
+      });
+      mock.resume();
+    }
+  );
+
+  it(
+    'should consume all data from the source upfront and invoke a given callback with the data length',
+    function (done) {
+      var readStub = sinon.stub(src, '_read', function () {
+        src.push('foo');
+        src.push(null);
+      });
+      mock._setSource(src, function (err, length) { // eslint-disable-line handle-callback-err
+        expect(err).to.be.null;
+        expect(readStub.callCount).to.be.at.least(1);
+        expect(length).to.equal(3);
+        done();
+      });
+    }
+  );
+
+  it(
+    'should invoke a provided callback with the err object ' +
+    'when the source stream emits an error',
+    function (done) {
+      var testError = new Error('foo');
+      src._read = function () {};
+      mock._setSource(src, function (err, length) {
+        expect(err).to.equal(testError);
+        expect(length).to.equal(0);
+        expect(mock.headers['content-length']).to.equal('0');
+        done();
+      });
+
+      setTimeout(function () {
+        src.emit('error', testError);
+      }, 5);
+    }
+  );
 });
 
-describe('MockRequest#_setSource (events)', function () {
+describe('MockRequest#_setSource (event proxy)', function () {
   beforeEach(function () {
     src = new Readable();
     src._read = function () {};

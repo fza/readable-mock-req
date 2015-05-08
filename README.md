@@ -9,12 +9,14 @@ Yet another [`http.IncomingMessage`](https://nodejs.org/api/http.html#http_http_
 * validating and setting uppercased `method` (defaults to GET),
 * ensuring there is a `url` (defaults to `/`),
 * populating `headers` and `rawHeaders` as expected,
-* populating `trailers` and `rawTrailers` after the `end` event
-* ending the readable stream automatically when the method is GET/HEAD/DELETE.
+* populating `trailers` and `rawTrailers` after the `end` event,
+* ending the stream automatically when the method is GET/HEAD/DELETE.
 
 Data can be piped into the request mock by either providing `props.source` (String, Buffer, Readable Stream), calling `_setSource()` with any of the aforementioned data types, or by using the usual suspects (`_read()`, `read()`, `push()`, `unshift()`).
 
 Before passing through data from a source stream, the mock awaits the first read attempt, then periodically pulls as much as it can and as much the mock's buffer can handle, never more. Creating a mock and passing a source stream, then destroying the mock, creating another and setting the same source there without any actual read attempts will not cause any data to be pulled from the source.
+
+Another mode of operation lets the mock consume data from the source stream immediately, effectively draining it. A callback can be used to be informed when all data has been transferred.
 
 readable-mock-req supports Streams3 API via [readable-stream ~v1.1.0](https://github.com/iojs/readable-stream).
 
@@ -87,7 +89,7 @@ GET
 <td class="default">
 {}
 </td>
-<td class="description last"><p>Additional properties, like <code>headers</code></p></td>
+<td class="description last"><p>Additional properties, like <code>headers</code> or <code>source</code></p></td>
 </tr>
 </tbody>
 </table>
@@ -95,9 +97,9 @@ GET
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js">readable-mock-req.js</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js#L32">lineno 32</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L142">lineno 142</a>
 </li>
 </ul></dd>
 </dl>
@@ -105,12 +107,11 @@ GET
 </div>
 <dl>
 <dt>
-<h4 class="name" id="_setSource"><span class="type-signature"></span>_setSource<span class="signature">(src)</span><span class="type-signature"></span></h4>
+<h4 class="name" id="_setSource"><span class="type-signature"></span>_setSource<span class="signature">(src, <span class="optional">cb</span>)</span><span class="type-signature"></span></h4>
 </dt>
 <dd>
 <div class="description">
-<p>Set the source, the mock will pass through all data and events. When using a source stream, do
-not override <code>_read()</code>!</p>
+<p>Set the source data or stream</p>
 </div>
 <h5>Parameters:</h5>
 <table class="params">
@@ -118,6 +119,7 @@ not override <code>_read()</code>!</p>
 <tr>
 <th>Name</th>
 <th>Type</th>
+<th>Argument</th>
 <th class="last">Description</th>
 </tr>
 </thead>
@@ -130,8 +132,27 @@ not override <code>_read()</code>!</p>
 <span class="param-type">string</span>
 |
 <span class="param-type">Buffer</span>
+|
+<span class="param-type">null</span>
 </td>
-<td class="description last"><p>Readable stream, string or Buffer</p></td>
+<td class="attributes">
+</td>
+<td class="description last"><p>Source, stream or static data</p></td>
+</tr>
+<tr>
+<td class="name"><code>cb</code></td>
+<td class="type">
+<span class="param-type">function</span>
+|
+<span class="param-type">boolean</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>Pass true or a callback fn and all data from the source stream
+will be pulled upfront, having the Content-Length header set accordingly, if there is no such
+header already. Signature: <code>fn(err, length)</code>, where <code>err</code> is any potential Error as emitted by
+the source stream. <code>length</code> is provided in any case and shows how much data has been read.</p></td>
 </tr>
 </tbody>
 </table>
@@ -139,9 +160,9 @@ not override <code>_read()</code>!</p>
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js">readable-mock-req.js</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js#L110">lineno 110</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L214">lineno 214</a>
 </li>
 </ul></dd>
 </dl>
@@ -158,9 +179,9 @@ not override <code>_read()</code>!</p>
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy">
 <li>
-<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js">readable-mock-req.js</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js">readable-mock-req.js</a>
 <span>, </span>
-<a href="https://github.com/fza/readable-mock-req/blob/tmp1/readable-mock-req.js#L100">lineno 100</a>
+<a href="https://github.com/fza/readable-mock-req/blob/master/readable-mock-req.js#L201">lineno 201</a>
 </li>
 </ul></dd>
 </dl>
